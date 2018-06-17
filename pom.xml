@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ninja.oscaz</groupId>
+    <artifactId>hero</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>Hero</name>
+
+    <properties>
+        <!-- Project Meta -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.java.major>1.8</version.java.major>
+
+        <!-- Dependency Versions -->
+        <version.apache.lang3>3.6</version.apache.lang3>
+        <version.apache.collections4>4.1</version.apache.collections4>
+        <version.google.guava>23.0</version.google.guava>
+        <version.lukehutch.fcs>2.8.2</version.lukehutch.fcs>
+        <version.apache.io>2.5</version.apache.io>
+        <version.slf4j>1.8.0-alpha2</version.slf4j>
+
+        <!-- Maven Plugin Versions -->
+        <version.plugin.compiler>3.6.2</version.plugin.compiler>
+        <version.plugin.shade>3.1.0</version.plugin.shade>
+    </properties>
+
+    <build>
+        <finalName>${project.name}</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.plugin.compiler}</version>
+                <configuration>
+                    <source>${version.java.major}</source>
+                    <target>${version.java.major}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- RUNTIME -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${version.apache.lang3}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${version.apache.collections4}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${version.google.guava}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.lukehutch</groupId>
+            <artifactId>fast-classpath-scanner</artifactId>
+            <version>${version.lukehutch.fcs}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${version.apache.io}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.slf4j}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${version.slf4j}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    
+</project>
