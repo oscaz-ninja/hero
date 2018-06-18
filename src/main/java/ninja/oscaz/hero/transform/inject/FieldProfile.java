@@ -24,7 +24,10 @@ public class FieldProfile {
     public void inject(Hero hero, Object instance) {
         this.handles.forEach(handle -> {
             Object param = hero.requestDynamic(handle.getFieldType());
-            Try.to(() -> handle.getHandle().invokeExact(instance, param));
+            //noinspection CodeBlock2Expr
+            Try.to(() -> {
+                handle.getHandle().invokeExact(instance, param);
+            });
         });
     }
 

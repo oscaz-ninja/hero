@@ -22,8 +22,8 @@ public class InjectionTransformer implements HeroTransformer {
         return value;
     }
 
-    private FieldProfile generateFieldProfile(Object value) {
-        return new FieldProfile(value.getClass());
+    private FieldProfile generateFieldProfile(Class<?> type) {
+        return new FieldProfile(type);
     }
 
 }

@@ -35,6 +35,7 @@ public final class Hero {
     private final List<HeroTransformer> transformers = Lists.newArrayList();
 
     private Hero() {
+        this.bind(Hero.class).toValue(this);
         this.transformers.add(new InjectionTransformer(this));
     }
 

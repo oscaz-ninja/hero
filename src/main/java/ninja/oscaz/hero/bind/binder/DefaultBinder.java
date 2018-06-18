@@ -2,6 +2,7 @@ package ninja.oscaz.hero.bind.binder;
 
 import ninja.oscaz.hero.Hero;
 import ninja.oscaz.hero.util.except.Try;
+import ninja.oscaz.hero.util.reflect.Handles;
 
 public class DefaultBinder implements Binder {
 
@@ -13,7 +14,7 @@ public class DefaultBinder implements Binder {
 
     @Override
     public Object create() {
-        return Try.toGet(this.type::newInstance);
+        return Try.toGet(Handles.accessibilify(Try.toGet(this.type::getDeclaredConstructor))::newInstance);
     }
 
 }

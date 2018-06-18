@@ -14,18 +14,17 @@ import ninja.oscaz.hero.transform.intercept.aspects.AuditInterceptor;
 public class DefaultHeroConfiguration implements HeroConfiguration {
 
     @Override
-    public void defaultTransformers(Hero hero) {
-        hero.addTransformer(InitializeTransformer.class);
-        hero.addTransformer(InterceptionTransformer.class);
-    }
-
-    @Override
     public void defaultBindings(Hero hero) {
-        hero.bind(Hero.class).toValue(hero);
         hero.bind(Singleton.class).to(SingletonBinder.class);
         hero.bind(Async.class).to(AsyncInterceptor.class);
         hero.bind(Audit.class).to(AuditInterceptor.class);
         hero.bind(Logger.class).toValue(Logger.getGlobal());
+    }
+
+    @Override
+    public void defaultTransformers(Hero hero) {
+        hero.addTransformer(InitializeTransformer.class);
+        hero.addTransformer(InterceptionTransformer.class);
     }
 
 }
