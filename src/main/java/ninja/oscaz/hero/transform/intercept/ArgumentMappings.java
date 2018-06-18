@@ -25,18 +25,17 @@ public class ArgumentMappings {
         return this.attemptToFind(type, arguments, 0);
     }
 
-    @SuppressWarnings("AssignmentToMethodParameter")
     public <R> R attemptToFind(Class<R> type, Object[] arguments, int skip) {
+        Skipper skipper = new Skipper(skip);
+
         for (Object object : arguments) {
             if (type.isInstance(object)) {
                 @SuppressWarnings("unchecked")
                 R value = (R) object;
 
-                if (skip == 0) {
+                if (skipper.shouldProceed()) {
                     return value;
                 }
-
-                skip--;
             }
         }
 
@@ -44,13 +43,12 @@ public class ArgumentMappings {
         Mappings<R> mappings = (Mappings<R>) this.typeMappings.get(type);
 
         if (mappings != null) {
-            R value = this.attemptToFind(mappings, arguments);
+            R value = this.attemptToFind(mappings, arguments, skipper);
 
             if (value != null) {
-                if (skip == 0) {
+                if (skipper.shouldProceed()) {
                     return value;
                 }
-                skip--;
             }
         }
 
@@ -59,13 +57,12 @@ public class ArgumentMappings {
                 @SuppressWarnings("unchecked")
                 Mappings<R> newMapping = (Mappings<R>) typeMapping;
 
-                R value = this.attemptToFind(newMapping, arguments);
+                R value = this.attemptToFind(newMapping, arguments, skipper);
 
                 if (value != null) {
-                    if (skip == 0) {
+                    if (skipper.shouldProceed()) {
                         return value;
                     }
-                    skip--;
                 }
             }
         }
@@ -73,7 +70,7 @@ public class ArgumentMappings {
         return null;
     }
 
-    private <R> R attemptToFind(Mappings<R> mappings, Object[] arguments) {
+    private <R> R attemptToFind(Mappings<R> mappings, Object[] arguments, Skipper skipper) {
         List<Mapping<?, R>> allMappings = mappings.getAllMappings();
 
         for (Object object : arguments) {
@@ -82,12 +79,33 @@ public class ArgumentMappings {
                     @SuppressWarnings("unchecked")
                     Mapping<Object, R> casted = (Mapping<Object, R>) mapping;
 
-                    return casted.apply(object);
+                    if (skipper.shouldProceed()) {
+                        return casted.apply(object);
+                    }
                 }
             }
         }
 
         return null;
+    }
+
+    private static final class Skipper {
+
+        private int skip;
+
+        private Skipper(int skip) {
+            this.skip = skip;
+        }
+
+        public boolean shouldProceed() {
+            if (this.skip == 0) {
+                return true;
+            }
+            this.skip--;
+
+            return false;
+        }
+
     }
 
     private static final class Mappings<R> {
