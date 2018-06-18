@@ -22,6 +22,7 @@ public class InterceptionTransformer implements HeroTransformer {
     private final Map<Class<?>, Class<?>> transformedTypes = new IdentityHashMap<>();
 
     @Inject private Hero hero;
+    @Inject private ArgumentMappings mappings;
 
     @Override
     public <T> Class<? extends T> transformType(Class<T> type) {
@@ -54,7 +55,7 @@ public class InterceptionTransformer implements HeroTransformer {
                 .map(object -> (Interceptor) object)
                 .collect(Collectors.toList());
 
-            InterceptionPipeline pipeline = new InterceptionPipeline(method, interceptors);
+            InterceptionPipeline pipeline = new InterceptionPipeline(method, this.mappings, interceptors);
 
             builder = builder.method(ElementMatchers.is(method))
                 .intercept(MethodDelegation.to(pipeline))

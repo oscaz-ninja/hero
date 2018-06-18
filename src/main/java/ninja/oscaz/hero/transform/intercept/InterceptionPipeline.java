@@ -11,16 +11,18 @@ import net.bytebuddy.implementation.bind.annotation.SuperCall;
 public class InterceptionPipeline {
 
     private final Method base;
+    private final ArgumentMappings mappings;
     private final List<Interceptor> interceptors;
 
-    public InterceptionPipeline(Method base, List<Interceptor> interceptors) {
+    public InterceptionPipeline(Method base, ArgumentMappings mappings, List<Interceptor> interceptors) {
         this.base = base;
+        this.mappings = mappings;
         this.interceptors = interceptors;
     }
 
     @RuntimeType
     public Object intercept(@AllArguments Object[] arguments, @SuperCall Callable<?> callable) throws Exception {
-        return new InterceptedCall(this.base, new Arguments(arguments), callable).call();
+        return new InterceptedCall(this.base, new Arguments(this.mappings, arguments), callable).call();
     }
 
     private final class InterceptedCall implements Callable<Object> {
