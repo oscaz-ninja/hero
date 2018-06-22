@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+
 import ninja.oscaz.hero.Hero;
 import ninja.oscaz.hero.bind.binder.Binder;
 import ninja.oscaz.hero.bind.binder.BindingAnnotation;
@@ -35,8 +37,10 @@ public class Bindings {
         Optional<Annotation> binderAnnotation = Annotations.findSingleSecondary(type, BindingAnnotation.class);
 
         if (binderAnnotation.isPresent()) {
-            Binder binder = (Binder) this.hero.request(binderAnnotation.get().annotationType());
-            return Binding.toSelf(type).with(binder);
+            @SuppressWarnings("unchecked")
+            Function<Class<?>, Binder> binder = (Function<Class<?>, Binder>) this.hero.requestDynamic(binderAnnotation.get().annotationType());
+
+            return Binding.toSelf(type).with(binder.apply(type));
         }
 
         return Binding.toSelf(type).with(new DefaultBinder(this.hero, type));

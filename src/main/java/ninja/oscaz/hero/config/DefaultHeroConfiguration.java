@@ -1,5 +1,6 @@
 package ninja.oscaz.hero.config;
 
+import java.util.function.Function;
 import java.util.logging.Logger;
 import ninja.oscaz.hero.Hero;
 import ninja.oscaz.hero.bind.binder.Singleton;
@@ -15,7 +16,7 @@ public class DefaultHeroConfiguration implements HeroConfiguration {
 
     @Override
     public void defaultBindings(Hero hero) {
-        hero.bind(Singleton.class).to(SingletonBinder.class);
+        hero.bind(Singleton.class).toSupplier(() -> (Function<Class<?>, SingletonBinder>) ((Class<?> type) -> new SingletonBinder(hero, type)));
         hero.bind(Async.class).to(AsyncInterceptor.class);
         hero.bind(Audit.class).to(AuditInterceptor.class);
         hero.bind(Logger.class).toValue(Logger.getGlobal());
